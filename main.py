@@ -19,16 +19,16 @@ import warnings
 import matplotlib.pyplot as plt
 
 
-OS = 'WIN'
+OS = 'LINUX'
 
 
 # %%
 if(OS=='WIN'):
     FILE_PATH = "C:\\Users\\86181\\Datasets\\Bird"
-    SAVE_PATH = "C:\\Users\\86181\\Datasets\\Bird\\array"
+    SAVE_PATH = "C:\\Users\\86181\\Datasets\\array"
 else:
     FILE_PATH = "/mnt/c/Users/86181/Datasets/Bird"
-    SAVE_PATH = "/mnt/c/Users/86181/Datasets/Bird/array"
+    SAVE_PATH = "/mnt/c/Users/86181/Datasets/array"
 BIRD_LABEL = {
     "0009": "灰雁",
     "0017": "大天鹅",
@@ -62,11 +62,11 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 # %%
 # super parameters
 batch_size = 50
-lr = 0.002
+lr = 0.0005
 epoch = 50
 max_count = 300
-full_data = False
-raw_data = True
+full_data = True
+raw_data = False
 
 
 # %%
@@ -83,10 +83,9 @@ def convert_to_spectrogram(dir,wav_file):
         spectrogram = librosa.feature.melspectrogram(y=y, sr=sr)
         S_dB = - librosa.power_to_db(spectrogram, ref=np.max) # use positive value!
         # save the np file
-        with open(filesavename,'wb')as f:
-            np.save(filesavename,S_dB)
+        np.save(filesavename,S_dB)
     else:
-        with open(filesavename,'rb')as f:
+        with open(filesavename + '.npy','rb')as f:
             S_dB = np.load(f)
         S_dB = Image.fromarray(S_dB)
         return S_dB
